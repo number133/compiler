@@ -120,6 +120,13 @@ public class Runner {
     }
 
     /**
+     *  Parse and Translate a Math Expression
+     */
+    public void expression(){
+        emitLn("MOVE #" + getNum() + ",DO");
+    }
+
+    /**
      * Initialize
      */
     public void init(){
@@ -129,5 +136,6 @@ public class Runner {
     public static void main(String[] args){
         Runner runner = new Runner();
         runner.init();
+        runner.expression();
     }
 }
