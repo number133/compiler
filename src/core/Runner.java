@@ -133,7 +133,7 @@ public class Runner {
     public void expression(){
         term();
         while(Arrays.asList('+', '-').contains(look)){
-            emitLn("MOVE D0,D1");
+            emitLn("MOVE D0,-(SP)");
             switch (look) {
                 case '+': {
                     add();
@@ -156,7 +156,7 @@ public class Runner {
     public void add(){
         match('+');
         term();
-        emitLn("ADD D1,D0");
+        emitLn("ADD (SP)+,D0");
     }
 
     /**
@@ -165,7 +165,7 @@ public class Runner {
     public void subtract(){
         match('-');
         term();
-        emitLn("SUB D1,D0");
+        emitLn("SUB (SP)+,D0");
         emitLn("SUB D0");
     }
 
