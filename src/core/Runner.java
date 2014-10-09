@@ -124,7 +124,13 @@ public class Runner {
      *  Parse and Translate a Math Factor
      */
     public void factor(){
-        emitLn("MOVE #" + getNum() + ",DO");
+        if(look == '('){
+            match('(');
+            expression();
+            match(')');
+        } else {
+            emitLn("MOVE #" + getNum() + ",DO");
+        }
     }
 
     /**
