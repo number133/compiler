@@ -122,8 +122,48 @@ public class Runner {
     /**
      *  Parse and Translate a Math Expression
      */
-    public void expression(){
+    public void term(){
         emitLn("MOVE #" + getNum() + ",DO");
+    }
+
+    /**
+     *  Parse and Translate an Expression
+     */
+    public void expression(){
+        term();
+        emitLn("MOVE D0,D1");
+        switch (look) {
+            case '+': {
+                add();
+                break;
+            }
+            case '-': {
+                subtract();
+                break;
+            }
+            default: {
+                expected("Addop");
+            }
+        }
+    }
+
+    /**
+     * Recognize and Translate an Add
+     */
+    public void add(){
+        match('+');
+        term();
+        emitLn("ADD D1,D0");
+    }
+
+    /**
+     * Recognize and Translate a Subtract
+     */
+    public void subtract(){
+        match('-');
+        term();
+        emitLn("SUB D1,D0");
+        emitLn("SUB D0");
     }
 
     /**
