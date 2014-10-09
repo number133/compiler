@@ -1,6 +1,7 @@
 package core;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Runner {
 
@@ -131,18 +132,20 @@ public class Runner {
      */
     public void expression(){
         term();
-        emitLn("MOVE D0,D1");
-        switch (look) {
-            case '+': {
-                add();
-                break;
-            }
-            case '-': {
-                subtract();
-                break;
-            }
-            default: {
-                expected("Addop");
+        while(Arrays.asList('+', '-').contains(look)){
+            emitLn("MOVE D0,D1");
+            switch (look) {
+                case '+': {
+                    add();
+                    break;
+                }
+                case '-': {
+                    subtract();
+                    break;
+                }
+                default: {
+                    expected("Addop");
+                }
             }
         }
     }
