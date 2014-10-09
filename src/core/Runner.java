@@ -121,10 +121,33 @@ public class Runner {
     }
 
     /**
-     *  Parse and Translate a Math Expression
+     *  Parse and Translate a Math Factor
+     */
+    public void factor(){
+        emitLn("MOVE #" + getNum() + ",DO");
+    }
+
+    /**
+     * Parse and Translate a Math Term
      */
     public void term(){
-        emitLn("MOVE #" + getNum() + ",DO");
+        factor();
+        while(Arrays.asList('*', '/').contains(look)){
+            emitLn("MOVE D0,-(SP)");
+            switch (look){
+                case '*': {
+                    multiply();
+                    break;
+                }
+                case '/': {
+                    divide();
+                    break;
+                }
+                default: {
+                    expected("Mulop");
+                }
+            }
+        }
     }
 
     /**
@@ -166,7 +189,22 @@ public class Runner {
         match('-');
         term();
         emitLn("SUB (SP)+,D0");
-        emitLn("SUB D0");
+        emitLn("NEG D0");
+    }
+
+    /**
+     * Recognize and Translate a Multiply
+     */
+    public void multiply(){
+        match('*');
+        factor();
+        emitLn("MULS (SP)+,D0");
+    }
+
+    public void divide(){
+        match('/');
+        factor();
+        emitLn("DIVS (SP)+,D0");
     }
 
     /**
