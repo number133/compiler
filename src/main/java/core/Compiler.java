@@ -1,21 +1,29 @@
-package core;
+package main.java.core;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 
-public class Runner {
+public class Compiler {
 
     /**
      * Lookahead Character
      */
     private char look;
+    private InputStream in;
+    private OutputStream out;
+
+
+    public Compiler(InputStream in){
+        this.in = in;
+        this.out = new ByteArrayOutputStream();
+    }
 
     /**
      * Read New Character From Input Stream
      */
-    public void getChar() {
+    private void getChar() {
         try {
-            look = (char)System.in.read();
+            look = (char)in.read();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -25,25 +33,29 @@ public class Runner {
      * Report an Error
      * @param s
      */
-    public void error(String s){
-        System.out.println();
-        System.out.println("\0007 Error:" + s + ".");
+    private void error(String s){
+        try {
+            out.write("\n".getBytes());
+            out.write(("\t Error:" + s + ".\n").getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Report Error and exit
      * @param s
      */
-    public void abort(String s){
+    private void abort(String s){
         error(s);
-        System.exit(1);
+        throw new CompileException();
     }
 
     /**
      * Report What Was Expected
      * @param s
      */
-    public void expected(String s){
+    private void expected(String s){
         abort(s + " Expected");
     }
 
@@ -51,7 +63,7 @@ public class Runner {
      * Match a Specific Input Character
      * @param x
      */
-    public void match(char x){
+    private void match(char x){
         if(look == x){
             getChar();
         } else {
@@ -64,7 +76,7 @@ public class Runner {
      * @param c
      * @return
      */
-    public boolean isAlpha(char c){
+    private boolean isAlpha(char c){
         return (Character.toUpperCase(c) >= 'A') && (Character.toUpperCase(c) <= 'Z');
     }
 
@@ -73,7 +85,7 @@ public class Runner {
      * @param c
      * @return
      */
-    public boolean isDigit(char c){
+    private boolean isDigit(char c){
         return (c >= '0') && (c <= '9');
     }
 
@@ -81,7 +93,7 @@ public class Runner {
      * Get an Identifier
      * @return
      */
-    public char getName(){
+    private char getName(){
         if(!isAlpha(look)){
             expected("Name");
         }
@@ -94,7 +106,7 @@ public class Runner {
      * Get a Number
      * @return
      */
-    public char getNum(){
+    private char getNum(){
         if(!isDigit(look)){
             expected("Integer");
         }
@@ -107,23 +119,31 @@ public class Runner {
      * Output a String with Tab
      * @param s
      */
-    public void emit(String s){
-        System.out.print("\t" + s);
+    private void emit(String s){
+        try {
+            out.write(("\t" + s).getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Output a String with Tab and CRLF
      * @param s
      */
-    public void emitLn(String s){
+    private void emitLn(String s){
         emit(s);
-        System.out.println();
+        try {
+            out.write("\n".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      *  Parse and Translate a Math Factor
      */
-    public void factor(){
+    private void factor(){
         if(look == '('){
             match('(');
             expression();
@@ -136,7 +156,7 @@ public class Runner {
     /**
      * Parse and Translate a Math Term
      */
-    public void term(){
+    private void term(){
         factor();
         while(Arrays.asList('*', '/').contains(look)){
             emitLn("MOVE D0,-(SP)");
@@ -182,7 +202,7 @@ public class Runner {
     /**
      * Recognize and Translate an Add
      */
-    public void add(){
+    private void add(){
         match('+');
         term();
         emitLn("ADD (SP)+,D0");
@@ -191,7 +211,7 @@ public class Runner {
     /**
      * Recognize and Translate a Subtract
      */
-    public void subtract(){
+    private void subtract(){
         match('-');
         term();
         emitLn("SUB (SP)+,D0");
@@ -201,13 +221,13 @@ public class Runner {
     /**
      * Recognize and Translate a Multiply
      */
-    public void multiply(){
+    private void multiply(){
         match('*');
         factor();
         emitLn("MULS (SP)+,D0");
     }
 
-    public void divide(){
+    private void divide(){
         match('/');
         factor();
         emitLn("DIVS (SP)+,D0");
@@ -220,9 +240,7 @@ public class Runner {
         getChar();
     }
 
-    public static void main(String[] args){
-        Runner runner = new Runner();
-        runner.init();
-        runner.expression();
+    public OutputStream getOut() {
+        return out;
     }
 }

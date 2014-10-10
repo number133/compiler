@@ -1,0 +1,7 @@
+EXPRESSION
+1+r
+RESULT_CODE
+	MOVE #1,DO
+	MOVE D0,-(SP)
+
+	 Error:Integer Expected.
