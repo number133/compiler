@@ -148,7 +148,9 @@ public class Compiler {
             match('(');
             expression();
             match(')');
-        } else {
+        } else if(isAlpha(look)) {
+            emitLn("MOVE " + getName() + "(PC),D0");
+        } else{
             emitLn("MOVE #" + getNum() + ",DO");
         }
     }

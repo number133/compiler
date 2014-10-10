@@ -1,7 +1,7 @@
 EXPRESSION
-1+r
+1+e
 RESULT_CODE
 	MOVE #1,DO
 	MOVE D0,-(SP)
-
-	 Error:Integer Expected.
+	MOVE E(PC),D0
+	ADD (SP)+,D0

@@ -25,11 +25,6 @@ public class CompilerTest {
     }
 
     @Test
-    public void testAddLetterError(){
-        runTest("addLetter.txt", "letter addition error");
-    }
-
-    @Test
     public void testAdd(){
         runTest("add.txt", "addition");
     }
@@ -57,6 +52,11 @@ public class CompilerTest {
     @Test
     public void testBraces(){
         runTest("braces.txt", "braces");
+    }
+
+    @Test
+    public void testVar(){
+        runTest("var.txt", "var");
     }
 
     public void runTest(String fileName, String error){
