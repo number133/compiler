@@ -20,13 +20,18 @@ public class CompilerTest {
     }
 
     @Test
-    public void testAdd(){
-        runTest("add.txt", "addition");
+    public void testNegativeDigit(){
+        runTest("negativeDigit.txt", "negative digit");
     }
 
     @Test
     public void testAddLetterError(){
         runTest("addLetter.txt", "letter addition error");
+    }
+
+    @Test
+    public void testAdd(){
+        runTest("add.txt", "addition");
     }
 
     @Test

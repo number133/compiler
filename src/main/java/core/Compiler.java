@@ -180,8 +180,12 @@ public class Compiler {
      *  Parse and Translate an Expression
      */
     public void expression(){
-        term();
-        while(Arrays.asList('+', '-').contains(look)){
+        if(isAddop(look)){
+            emitLn("CLR D0");
+        } else {
+            term();
+        }
+        while(isAddop(look)){
             emitLn("MOVE D0,-(SP)");
             switch (look) {
                 case '+': {
@@ -231,6 +235,10 @@ public class Compiler {
         match('/');
         factor();
         emitLn("DIVS (SP)+,D0");
+    }
+
+    private boolean isAddop(char c){
+        return Arrays.asList('+', '-').contains(c);
     }
 
     /**
