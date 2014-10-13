@@ -59,6 +59,11 @@ public class CompilerTest {
         runTest("var.txt", "var");
     }
 
+    @Test
+    public void testFunction(){
+        runTest("func.txt", "function");
+    }
+
     public void runTest(String fileName, String error){
         testReader = new TestReader(fileName);
         testReader.process();

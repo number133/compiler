@@ -149,9 +149,20 @@ public class Compiler {
             expression();
             match(')');
         } else if(isAlpha(look)) {
-            emitLn("MOVE " + getName() + "(PC),D0");
+            ident();
         } else{
             emitLn("MOVE #" + getNum() + ",DO");
+        }
+    }
+
+    private void ident() {
+        char name = getName();
+        if(look == '('){
+            match('(');
+            match(')');
+            emitLn("BSR " + name);
+        } else {
+            emitLn("MOVE " + name + "(PC),D0");
         }
     }
 
