@@ -1,22 +1,10 @@
 package main.java.test;
 
-import static junit.framework.Assert.assertEquals;
-
-import main.java.core.*;
-import main.java.core.Compiler;
 import main.java.core.CoreCompiler;
+import main.java.core.CoreTest;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-public class CoreCompilerTest {
-    InputStream in;
-    TestReader testReader;
-    Compiler compiler;
-    Class compilerClass;
+public class CoreCompilerTest extends CoreTest{
 
     public CoreCompilerTest(){
         compilerClass = CoreCompiler.class;
@@ -77,26 +65,4 @@ public class CoreCompilerTest {
         runTest("newlineError.txt", "new line");
     }
 
-    public void runTest(String fileName, String error){
-        testReader = new TestReader(fileName);
-        testReader.process();
-        in = new ByteArrayInputStream(testReader.getExpression().getBytes());
-        Constructor constructor = compilerClass.getDeclaredConstructors()[0];
-        constructor.setAccessible(true);
-        try {
-            compiler = (Compiler)constructor.newInstance(in);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        try {
-            compiler.compile();
-        } catch(CompileException e){
-            assertEquals(error, testReader.getResultCode(), compiler.getOut().toString());
-        }
-        assertEquals(error, testReader.getResultCode(), compiler.getOut().toString());
-    }
 }

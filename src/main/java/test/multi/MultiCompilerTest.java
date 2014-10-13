@@ -1,9 +1,10 @@
-package main.java.test;
+package main.java.test.multi;
 
 import main.java.second.MultiCompiler;
+import main.java.test.CoreCompilerTest;
 import org.junit.Test;
 
-public class MultiCompilerTest extends CoreCompilerTest{
+public class MultiCompilerTest extends CoreCompilerTest {
 
     public MultiCompilerTest(){
         compilerClass = MultiCompiler.class;
