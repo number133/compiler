@@ -9,12 +9,12 @@ public class CoreCompiler implements Compiler{
      * Lookahead Character
      */
     private char look;
-    private InputStream in;
+    private InputStream codeInput;
     private OutputStream out;
 
 
-    public CoreCompiler(InputStream in){
-        this.in = in;
+    public CoreCompiler(InputStream codeInput){
+        this.codeInput = codeInput;
         this.out = new ByteArrayOutputStream();
     }
 
@@ -23,7 +23,7 @@ public class CoreCompiler implements Compiler{
      */
     private void getChar() {
         try {
-            look = (char)in.read();
+            look = (char) codeInput.read();
         } catch (IOException e) {
             e.printStackTrace();
         }

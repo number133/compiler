@@ -3,23 +3,32 @@ package main.java.inter;
 import main.java.core.*;
 import main.java.core.Compiler;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Interpreter implements Compiler {
     /**
      * Lookahead Character
      */
     private char look;
-    private InputStream in;
+    private Map<Character, Integer> table = new HashMap<Character, Integer>();
+
+    private InputStream codeInput;
+    private BufferedReader consoleInput;
     private OutputStream out;
 
-    public Interpreter(InputStream in){
-        this.in = in;
+    public Interpreter(InputStream codeInput, InputStream consoleInput){
+        this.codeInput = codeInput;
+        this.consoleInput = new BufferedReader(new InputStreamReader(consoleInput));
         this.out = new ByteArrayOutputStream();
+    }
+
+    private void initTable(){
+        for(char c = 'A'; c <= 'Z'; c++){
+            table.put(c, 0);
+        }
     }
 
     /**
@@ -27,7 +36,7 @@ public class Interpreter implements Compiler {
      */
     private void getChar() {
         try {
-            look = (char)in.read();
+            look = (char) codeInput.read();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,6 +81,15 @@ public class Interpreter implements Compiler {
             getChar();
         } else {
             expected("" + x);
+        }
+    }
+
+    /**
+     * Recognize and Skip Over a Newline
+     */
+    private void newLine(){
+        if(look == '\n'){
+            getChar();
         }
     }
 
@@ -122,12 +140,23 @@ public class Interpreter implements Compiler {
         return result;
     }
 
+    /**
+     * Parse and Translate an Assignment Statement
+     */
+    private void assignment(){
+        char name = getName();
+        match('=');
+        table.put(name, expression());
+    }
+
     private int factor(){
         int value = 0;
         if(look == '('){
             match('(');
             value = expression();
             match(')');
+        } else if(isAlpha(look)){
+            value = table.get(getName());
         } else {
             value = getNum();
         }
@@ -187,9 +216,34 @@ public class Interpreter implements Compiler {
     }
 
     /**
+     * Input Routine
+     */
+    private void input(){
+        match('?');
+        try {
+            table.put(getName(), Integer.valueOf(consoleInput.readLine()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Output Routine
+     */
+    private void output(){
+        match('!');
+        try {
+            out.write((table.get(getName()).toString() + "\n").getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Initialize
      */
     private void init(){
+        initTable();
         getChar();
     }
 
@@ -197,17 +251,31 @@ public class Interpreter implements Compiler {
      * main method
      */
     public void compile(){
+
         init();
-        try {
-            getOut().write(
-                    (String.valueOf(expression()) + "\n").getBytes()
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(look != '\n'){
-            expected("Newline");
-        }
+        do {
+            switch (look){
+                case '?':{
+                    input();
+                    break;
+                }
+                case '!':{
+                    output();
+                    break;
+                }
+                default:{
+//                    try {
+                        assignment();
+//                        getOut().write(
+//                                (String.valueOf(table.get('A')) + "\n").getBytes()
+//                        );
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+            }
+            newLine();
+        } while(look != '.');
     }
 
     public OutputStream getOut() {

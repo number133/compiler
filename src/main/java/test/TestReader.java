@@ -7,9 +7,11 @@ public class TestReader {
     private String fileName;
     private ReaderMode mode;
     private StringBuilder expression;
+    private StringBuilder consoleInput;
     private StringBuilder resultCode;
     private enum ReaderMode{
         EXPRESSION,
+        CONSOLE_INPUT,
         RESULT_CODE
     }
 
@@ -17,6 +19,7 @@ public class TestReader {
         this.fileName = fileName;
         this.resultCode = new StringBuilder();
         this.expression = new StringBuilder();
+        this.consoleInput = new StringBuilder();
     }
 
     public void process() {
@@ -36,13 +39,18 @@ public class TestReader {
             mode = ReaderMode.EXPRESSION;
         } else if(line.equals(ReaderMode.RESULT_CODE.toString())){
             mode = ReaderMode.RESULT_CODE;
-        } else {
+        } else if(line.equals(ReaderMode.CONSOLE_INPUT.toString())){
+            mode = ReaderMode.CONSOLE_INPUT;
+        }else {
             if(mode == ReaderMode.EXPRESSION){
                 expression.append(line);
                 expression.append("\n");
             } else if(mode == ReaderMode.RESULT_CODE){
                 resultCode.append(line);
                 resultCode.append("\n");
+            } else if(mode == ReaderMode.CONSOLE_INPUT){
+                consoleInput.append(line);
+                consoleInput.append("\n");
             }
         }
     }
@@ -53,5 +61,9 @@ public class TestReader {
 
     public String getResultCode() {
         return resultCode.toString();
+    }
+
+    public String getConsoleInput() {
+        return consoleInput.toString();
     }
 }

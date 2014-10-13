@@ -15,12 +15,12 @@ public class MultiCompiler implements Compiler{
      * Lookahead Character
      */
     private char look;
-    private InputStream in;
+    private InputStream codeInput;
     private OutputStream out;
 
 
-    public MultiCompiler(InputStream in){
-        this.in = in;
+    public MultiCompiler(InputStream codeInput){
+        this.codeInput = codeInput;
         this.out = new ByteArrayOutputStream();
     }
 
@@ -29,7 +29,7 @@ public class MultiCompiler implements Compiler{
      */
     private void getChar() {
         try {
-            look = (char)in.read();
+            look = (char) codeInput.read();
         } catch (IOException e) {
             e.printStackTrace();
         }

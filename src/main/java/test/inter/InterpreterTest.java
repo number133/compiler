@@ -39,4 +39,9 @@ public class InterpreterTest extends CoreTest {
     public void testBraces(){
         runTest("inter/braces.txt", "braces");
     }
+
+    @Test
+    public void testInout(){
+        runTest("inter/inout.txt", "inout");
+    }
 }

@@ -10,7 +10,8 @@ import java.lang.reflect.InvocationTargetException;
 import static junit.framework.Assert.assertEquals;
 
 public abstract class CoreTest {
-    InputStream in;
+    InputStream codeInput;
+    InputStream consoleInput;
     TestReader testReader;
     Compiler compiler;
     protected Class compilerClass;
@@ -18,11 +19,16 @@ public abstract class CoreTest {
     public void runTest(String fileName, String error){
         testReader = new TestReader(fileName);
         testReader.process();
-        in = new ByteArrayInputStream(testReader.getExpression().getBytes());
+        codeInput = new ByteArrayInputStream(testReader.getExpression().getBytes());
+        consoleInput = new ByteArrayInputStream(testReader.getConsoleInput().getBytes());
         Constructor constructor = compilerClass.getDeclaredConstructors()[0];
         constructor.setAccessible(true);
         try {
-            compiler = (Compiler)constructor.newInstance(in);
+            if(constructor.getParameterTypes().length > 1) {
+                compiler = (Compiler) constructor.newInstance(codeInput, consoleInput);
+            } else {
+                compiler = (Compiler) constructor.newInstance(codeInput);
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
