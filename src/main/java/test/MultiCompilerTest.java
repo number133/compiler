@@ -13,4 +13,9 @@ public class MultiCompilerTest extends CoreCompilerTest{
     public void testMultiChar(){
         runTest("multi/multiChar.txt", "multiChar");
     }
+
+    @Test
+    public void testSpace(){
+        runTest("multi/space.txt", "space");
+    }
 }

@@ -70,10 +70,11 @@ public class MultiCompiler implements Compiler{
      * @param x
      */
     private void match(char x){
-        if(look == x){
-            getChar();
-        } else {
+        if(look != x){
             expected("" + x);
+        } else {
+            getChar();
+            skipWhite();
         }
     }
 
@@ -105,6 +106,24 @@ public class MultiCompiler implements Compiler{
     }
 
     /**
+     *  Recognize White Space
+     * @param c
+     * @return
+     */
+    private boolean isWhite(char c){
+        return Arrays.asList(' ', '\t').contains(c);
+    }
+
+    /**
+     *  Skip Over Leading White Space
+     */
+    private void skipWhite(){
+        while(isWhite(look)){
+            getChar();
+        }
+    }
+
+    /**
      * Get an Identifier
      * @return
      */
@@ -117,6 +136,7 @@ public class MultiCompiler implements Compiler{
             token = token + Character.toUpperCase(look);
             getChar();
         }
+        skipWhite();
         return token;
     }
 
@@ -133,6 +153,7 @@ public class MultiCompiler implements Compiler{
             value = value + look;
             getChar();
         }
+        skipWhite();
         return value;
     }
 
@@ -288,6 +309,7 @@ public class MultiCompiler implements Compiler{
      */
     private void init(){
         getChar();
+        skipWhite();
     }
 
     /**
