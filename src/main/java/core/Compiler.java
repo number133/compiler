@@ -216,6 +216,14 @@ public class Compiler {
         }
     }
 
+    private void assignment(){
+        char name = getName();
+        match('=');
+        expression();
+        emitLn("LEA " + name + "(PC),A0");
+        emitLn("MOVE D0,(A0)");
+    }
+
     /**
      * Recognize and Translate an Add
      */
@@ -266,7 +274,7 @@ public class Compiler {
      */
     public void compile(){
         init();
-        expression();
+        assignment();
         if(look != '\n'){
             expected("Newline");
         }

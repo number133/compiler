@@ -1,5 +1,5 @@
 EXPRESSION
-1*(4-3)/(6+2)
+x=1*(4-3)/(6+2)
 RESULT_CODE
 	MOVE #1,DO
 	MOVE D0,-(SP)
@@ -15,3 +15,5 @@ RESULT_CODE
 	MOVE #2,DO
 	ADD (SP)+,D0
 	DIVS (SP)+,D0
+	LEA X(PC),A0
+	MOVE D0,(A0)
