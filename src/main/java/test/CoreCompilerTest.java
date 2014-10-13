@@ -1,18 +1,26 @@
-package main.java.core.test;
+package main.java.test;
 
 import static junit.framework.Assert.assertEquals;
 
 import main.java.core.*;
 import main.java.core.Compiler;
+import main.java.core.CoreCompiler;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
-public class CompilerTest {
+public class CoreCompilerTest {
     InputStream in;
     TestReader testReader;
-    main.java.core.Compiler compiler;
+    Compiler compiler;
+    Class compilerClass;
+
+    public CoreCompilerTest(){
+        compilerClass = CoreCompiler.class;
+    }
 
     @Test
     public void testOneDigit(){
@@ -73,7 +81,17 @@ public class CompilerTest {
         testReader = new TestReader(fileName);
         testReader.process();
         in = new ByteArrayInputStream(testReader.getExpression().getBytes());
-        compiler = new Compiler(in);
+        Constructor constructor = compilerClass.getDeclaredConstructors()[0];
+        constructor.setAccessible(true);
+        try {
+            compiler = (Compiler)constructor.newInstance(in);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
         try {
             compiler.compile();
         } catch(CompileException e){

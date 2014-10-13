@@ -1,4 +1,4 @@
-package main.java.core.test;
+package main.java.test;
 
 import java.io.*;
 
