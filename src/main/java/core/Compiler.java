@@ -192,7 +192,7 @@ public class Compiler {
     /**
      *  Parse and Translate an Expression
      */
-    public void expression(){
+    private void expression(){
         if(isAddop(look)){
             emitLn("CLR D0");
         } else {
@@ -257,8 +257,19 @@ public class Compiler {
     /**
      * Initialize
      */
-    public void init(){
+    private void init(){
         getChar();
+    }
+
+    /**
+     * main method
+     */
+    public void compile(){
+        init();
+        expression();
+        if(look != '\n'){
+            expected("Newline");
+        }
     }
 
     public OutputStream getOut() {

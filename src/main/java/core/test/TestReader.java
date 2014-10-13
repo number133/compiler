@@ -6,7 +6,7 @@ public class TestReader {
 
     private String fileName;
     private ReaderMode mode;
-    private String expression;
+    private StringBuilder expression;
     private StringBuilder resultCode;
     private enum ReaderMode{
         EXPRESSION,
@@ -16,6 +16,7 @@ public class TestReader {
     public TestReader(String fileName){
         this.fileName = fileName;
         this.resultCode = new StringBuilder();
+        this.expression = new StringBuilder();
     }
 
     public void process() {
@@ -37,7 +38,8 @@ public class TestReader {
             mode = ReaderMode.RESULT_CODE;
         } else {
             if(mode == ReaderMode.EXPRESSION){
-                expression = line;
+                expression.append(line);
+                expression.append("\n");
             } else if(mode == ReaderMode.RESULT_CODE){
                 resultCode.append(line);
                 resultCode.append("\n");
@@ -46,7 +48,7 @@ public class TestReader {
     }
 
     public String getExpression() {
-        return expression;
+        return expression.toString();
     }
 
     public String getResultCode() {

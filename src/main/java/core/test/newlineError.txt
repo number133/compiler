@@ -1,0 +1,10 @@
+EXPRESSION
+1-4 5+6
+RESULT_CODE
+	MOVE #1,DO
+	MOVE D0,-(SP)
+	MOVE #4,DO
+	SUB (SP)+,D0
+	NEG D0
+
+	 Error:Newline Expected.

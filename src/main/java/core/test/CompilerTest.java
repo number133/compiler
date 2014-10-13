@@ -64,14 +64,18 @@ public class CompilerTest {
         runTest("func.txt", "function");
     }
 
+    @Test
+    public void testNewlineError(){
+        runTest("newlineError.txt", "new line");
+    }
+
     public void runTest(String fileName, String error){
         testReader = new TestReader(fileName);
         testReader.process();
         in = new ByteArrayInputStream(testReader.getExpression().getBytes());
         compiler = new Compiler(in);
-        compiler.init();
         try {
-            compiler.expression();
+            compiler.compile();
         } catch(CompileException e){
             assertEquals(error, testReader.getResultCode(), compiler.getOut().toString());
         }
