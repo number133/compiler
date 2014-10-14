@@ -29,4 +29,9 @@ public class ControlCompilerTest extends CoreTest{
     public void testRepeat(){
         runTest("control/repeat.txt", "repeat");
     }
+
+    @Test
+    public void testFor(){
+        runTest("control/for.txt", "for");
+    }
 }

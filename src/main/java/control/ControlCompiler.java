@@ -188,6 +188,10 @@ public class ControlCompiler implements Compiler {
                     doRepeat();
                     break;
                 }
+                case 'f': {
+                    doFor();
+                    break;
+                }
                 default:{
                     other();
                 }
@@ -287,6 +291,45 @@ public class ControlCompiler implements Compiler {
         match('u');
         condition();
         emitLn("BEQ " + labe1);
+    }
+
+    /**
+     *  Parse and Translate a FOR Statement
+     */
+    private void doFor(){
+        String labe1, labe2;
+        char name;
+        match('f');
+        labe1 = newLabel();
+        labe2 = newLabel();
+        name = getName();
+        match('=');
+        expression();
+        emitLn("SUBQ #1,D0");
+        emitLn("LEA " + name + "(PC),A0");
+        emitLn("MOVE (D0),A0");
+        expression();
+        emitLn("MOVE D0,-(SP)");
+        postLabel(labe1);
+        emitLn("LEA " + name + "(PC),A0");
+        emitLn("MOVE (A0),D0");
+        emitLn("ADDQ #1,D0");
+        emitLn("MOVE D0,(A0)");
+        emitLn("CMP (SP),D0");
+        emitLn("BGT " + labe2);
+        block();
+        match('e');
+        emitLn("BRA " + labe1);
+        postLabel(labe2);
+        emitLn("ADDQ #2,SP");
+    }
+
+    /**
+     *  Parse and Translate an Expression
+     *  This version is a dummy
+     */
+    private void expression(){
+        emitLn("<expr>");
     }
 
     /**

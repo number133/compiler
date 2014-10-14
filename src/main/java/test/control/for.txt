@@ -1,0 +1,23 @@
+EXPRESSION
+afi=bece
+RESULT_CODE
+	A
+	<expr>
+	SUBQ #1,D0
+	LEA I(PC),A0
+	MOVE (D0),A0
+	<expr>
+	MOVE D0,-(SP)
+L0
+	LEA I(PC),A0
+	MOVE (A0),D0
+	ADDQ #1,D0
+	MOVE D0,(A0)
+	CMP (SP),D0
+	BGT L1
+	B
+	BRA L0
+L1
+	ADDQ #2,SP
+	C
+	END
