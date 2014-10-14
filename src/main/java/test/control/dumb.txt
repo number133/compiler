@@ -1,0 +1,12 @@
+EXPRESSION
+aiblcede
+RESULT_CODE
+	A
+	<condition>
+	BEQ L0
+	B
+	L
+	C
+L0
+	D
+	END
