@@ -6,8 +6,9 @@ L0
 	C
 	C
 	<condition>
-	BEQ L1
+	BEQ L2
 	N
-L1
+L2
 	BRA L0
+L1
 	END

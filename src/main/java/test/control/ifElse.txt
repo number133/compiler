@@ -1,10 +1,10 @@
 EXPRESSION
-aiblceve
+aivlceve
 RESULT_CODE
 	A
 	<condition>
 	BEQ L0
-	B
+	V
 	BRA L1
 L0
 	C

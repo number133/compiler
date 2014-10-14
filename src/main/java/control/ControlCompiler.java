@@ -159,7 +159,7 @@ public class ControlCompiler implements Compiler {
      *  Parse and Translate a Program
      */
     private void doProgram(){
-        block();
+        block("");
         if(look!='e'){
             expected("End");
         }
@@ -169,11 +169,11 @@ public class ControlCompiler implements Compiler {
     /**
      * Recognize and Translate a Statement Block
      */
-    private void block(){
+    private void block(String label){
         block: while(!Arrays.asList('e', 'l', 'u').contains(look)){
             switch (look){
                 case 'i': {
-                    doIf();
+                    doIf(label);
                     break;
                 }
                 case 'w': {
@@ -194,6 +194,10 @@ public class ControlCompiler implements Compiler {
                 }
                 case 'd': {
                     doDo();
+                    break;
+                }
+                case 'b': {
+                    doBreak(label);
                     break;
                 }
                 default:{
@@ -235,22 +239,35 @@ public class ControlCompiler implements Compiler {
     }
 
     /**
+     * Recognize and Translate a BREAK
+     * @param label
+     */
+    private void doBreak(String label){
+        match('b');
+        if(label!=null && !label.isEmpty()){
+            emitLn("BRA " + label);
+        } else {
+            abort("No loop to break from");
+        }
+    }
+
+    /**
      * Recognize and Translate an IF Construct
      */
-    private void doIf(){
+    private void doIf(String label){
         String labe1, labe2;
         match('i');
         condition();
         labe1 = newLabel();
         labe2 = labe1;
         emitLn("BEQ " + labe1);
-        block();
+        block(label);
         if(look == 'l'){
             match('l');
             labe2 = newLabel();
             emitLn("BRA " + labe2);
             postLabel(labe1);
-            block();
+            block(label);
         }
         match('e');
         postLabel(labe2);
@@ -264,7 +281,7 @@ public class ControlCompiler implements Compiler {
         postLabel(labe1);
         condition();
         emitLn("BEQ " + labe2);
-        block();
+        block(labe2);
         match('e');
         emitLn("BRA " + labe1);
         postLabel(labe2);
@@ -274,27 +291,31 @@ public class ControlCompiler implements Compiler {
      *  Parse and Translate a LOOP Statement
      */
     private void doLoop(){
-        String labe1;
+        String labe1, labe2;
         match('p');
         labe1 = newLabel();
+        labe2 = newLabel();
         postLabel(labe1);
-        block();
+        block(labe2);
         match('e');
         emitLn("BRA " + labe1);
+        postLabel(labe2);
     }
 
     /**
      * Parse and Translate a REPEAT Statement
      */
     private void doRepeat(){
-        String labe1;
+        String labe1, labe2;
         match('r');
         labe1 = newLabel();
+        labe2 = newLabel();
         postLabel(labe1);
-        block();
+        block(labe2);
         match('u');
         condition();
         emitLn("BEQ " + labe1);
+        postLabel(labe2);
     }
 
     /**
@@ -321,7 +342,7 @@ public class ControlCompiler implements Compiler {
         emitLn("MOVE D0,(A0)");
         emitLn("CMP (SP),D0");
         emitLn("BGT " + labe2);
-        block();
+        block(labe2);
         match('e');
         emitLn("BRA " + labe1);
         postLabel(labe2);
@@ -332,16 +353,20 @@ public class ControlCompiler implements Compiler {
      *  Parse and Translate a DO Statement
      */
     private void doDo(){
-        String labe;
+        String labe1, labe2;
         match('d');
-        labe = newLabel();
+        labe1 = newLabel();
+        labe2 = newLabel();
         expression();
         emitLn("SUBQ #1,D0");
-        postLabel(labe);
+        postLabel(labe1);
         emitLn("MOVE D0,-(SP)");
-        block();
+        block(labe2);
         emitLn("MOVE (SP)+,D0");
-        emitLn("DBRA D0," + labe);
+        emitLn("DBRA D0," + labe1);
+        emitLn("SUBQ #2,SP");
+        postLabel(labe2);
+        emitLn("ADDQ #2,SP");
     }
 
     /**

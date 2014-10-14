@@ -11,8 +11,8 @@ public class ControlCompilerTest extends CoreTest{
     }
 
     @Test
-    public void testDumb(){
-        runTest("control/dumb.txt", "dumb");
+    public void testIfElse(){
+        runTest("control/ifElse.txt", "if/else");
     }
 
     @Test
@@ -38,5 +38,10 @@ public class ControlCompilerTest extends CoreTest{
     @Test
     public void testDo(){
         runTest("control/do.txt", "do");
+    }
+
+    @Test
+    public void testBreak(){
+        runTest("control/break.txt", "break");
     }
 }

@@ -7,5 +7,6 @@ L0
 	C
 	<condition>
 	BEQ L0
+L1
 	V
 	END

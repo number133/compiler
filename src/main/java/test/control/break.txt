@@ -1,17 +1,25 @@
 EXPRESSION
-adcccee
+aivlcdhbhemeve
 RESULT_CODE
 	A
+	<condition>
+	BEQ L0
+	V
+	BRA L1
+L0
+	C
 	<expr>
 	SUBQ #1,D0
-L0
+L2
 	MOVE D0,-(SP)
-	C
-	C
-	C
+	H
+	BRA L3
+	H
 	MOVE (SP)+,D0
-	DBRA D0,L0
+	DBRA D0,L2
 	SUBQ #2,SP
-L1
+L3
 	ADDQ #2,SP
+L1
+	M
 	END

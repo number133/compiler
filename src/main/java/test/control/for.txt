@@ -1,5 +1,5 @@
 EXPRESSION
-afi=bece
+afi=vece
 RESULT_CODE
 	A
 	<expr>
@@ -15,7 +15,7 @@ L0
 	MOVE D0,(A0)
 	CMP (SP),D0
 	BGT L1
-	B
+	V
 	BRA L0
 L1
 	ADDQ #2,SP
