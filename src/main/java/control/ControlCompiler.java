@@ -180,6 +180,10 @@ public class ControlCompiler implements Compiler {
                     doWhile();
                     break;
                 }
+                case 'p': {
+                    doLoop();
+                    break;
+                }
                 case 'e': {
                     break;
                 }
@@ -255,6 +259,19 @@ public class ControlCompiler implements Compiler {
         match('e');
         emitLn("BRA " + labe1);
         postLabel(labe2);
+    }
+
+    /**
+     *  Parse and Translate a LOOP Statement
+     */
+    private void doLoop(){
+        String labe1;
+        match('p');
+        labe1 = newLabel();
+        postLabel(labe1);
+        block();
+        match('e');
+        emitLn("BRA " + labe1);
     }
 
     /**

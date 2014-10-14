@@ -19,4 +19,9 @@ public class ControlCompilerTest extends CoreTest{
     public void testWhile(){
         runTest("control/while.txt", "while");
     }
+
+    @Test
+    public void testLoop(){
+        runTest("control/loop.txt", "loop");
+    }
 }

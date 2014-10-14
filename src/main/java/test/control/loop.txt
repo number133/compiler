@@ -1,0 +1,13 @@
+EXPRESSION
+apccireee
+RESULT_CODE
+	A
+L0
+	C
+	C
+	<condition>
+	BEQ L1
+	R
+L1
+	BRA L0
+	END
