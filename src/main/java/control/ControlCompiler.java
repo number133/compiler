@@ -192,6 +192,10 @@ public class ControlCompiler implements Compiler {
                     doFor();
                     break;
                 }
+                case 'd': {
+                    doDo();
+                    break;
+                }
                 default:{
                     other();
                 }
@@ -322,6 +326,22 @@ public class ControlCompiler implements Compiler {
         emitLn("BRA " + labe1);
         postLabel(labe2);
         emitLn("ADDQ #2,SP");
+    }
+
+    /**
+     *  Parse and Translate a DO Statement
+     */
+    private void doDo(){
+        String labe;
+        match('d');
+        labe = newLabel();
+        expression();
+        emitLn("SUBQ #1,D0");
+        postLabel(labe);
+        emitLn("MOVE D0,-(SP)");
+        block();
+        emitLn("MOVE (SP)+,D0");
+        emitLn("DBRA D0," + labe);
     }
 
     /**

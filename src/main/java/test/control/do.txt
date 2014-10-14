@@ -1,0 +1,14 @@
+EXPRESSION
+adcccee
+RESULT_CODE
+	A
+	<expr>
+	SUBQ #1,D0
+L0
+	MOVE D0,-(SP)
+	C
+	C
+	C
+	MOVE (SP)+,D0
+	DBRA D0,L0
+	END

@@ -1,11 +1,11 @@
 EXPRESSION
-awdictlcedee
+awcictlcecee
 RESULT_CODE
 	A
 L0
 	<condition>
 	BEQ L1
-	D
+	C
 	<condition>
 	BEQ L2
 	C
@@ -14,7 +14,7 @@ L0
 L2
 	C
 L3
-	D
+	C
 	BRA L0
 L1
 	END

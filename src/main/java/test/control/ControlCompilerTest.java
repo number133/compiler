@@ -34,4 +34,9 @@ public class ControlCompilerTest extends CoreTest{
     public void testFor(){
         runTest("control/for.txt", "for");
     }
+
+    @Test
+    public void testDo(){
+        runTest("control/do.txt", "do");
+    }
 }

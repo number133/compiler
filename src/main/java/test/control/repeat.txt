@@ -1,5 +1,5 @@
 EXPRESSION
-arccudee
+arccuvee
 RESULT_CODE
 	A
 L0
@@ -7,5 +7,5 @@ L0
 	C
 	<condition>
 	BEQ L0
-	D
+	V
 	END
