@@ -176,6 +176,10 @@ public class ControlCompiler implements Compiler {
                     doIf();
                     break;
                 }
+                case 'w': {
+                    doWhile();
+                    break;
+                }
                 case 'e': {
                     break;
                 }
@@ -236,6 +240,20 @@ public class ControlCompiler implements Compiler {
             block();
         }
         match('e');
+        postLabel(labe2);
+    }
+
+    private void doWhile(){
+        String labe1, labe2;
+        match('w');
+        labe1 = newLabel();
+        labe2 = newLabel();
+        postLabel(labe1);
+        condition();
+        emitLn("BEQ " + labe2);
+        block();
+        match('e');
+        emitLn("BRA " + labe1);
         postLabel(labe2);
     }
 

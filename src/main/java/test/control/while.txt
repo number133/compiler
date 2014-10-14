@@ -1,0 +1,19 @@
+EXPRESSION
+awdirtlcedee
+RESULT_CODE
+	A
+L0
+	<condition>
+	BEQ L1
+	D
+	<condition>
+	BEQ L2
+	R
+	T
+	L
+	C
+L2
+	D
+	BRA L0
+L1
+	END

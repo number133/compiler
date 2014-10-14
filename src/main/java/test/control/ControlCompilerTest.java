@@ -14,4 +14,9 @@ public class ControlCompilerTest extends CoreTest{
     public void testDumb(){
         runTest("control/dumb.txt", "dumb");
     }
+
+    @Test
+    public void testWhile(){
+        runTest("control/while.txt", "while");
+    }
 }
