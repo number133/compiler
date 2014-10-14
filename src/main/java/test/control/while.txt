@@ -1,5 +1,5 @@
 EXPRESSION
-awdirtlcedee
+awdictlcedee
 RESULT_CODE
 	A
 L0
@@ -8,11 +8,12 @@ L0
 	D
 	<condition>
 	BEQ L2
-	R
-	T
-	L
 	C
+	T
+	BRA L3
 L2
+	C
+L3
 	D
 	BRA L0
 L1

@@ -1,13 +1,11 @@
 EXPRESSION
-apccineee
+arccudee
 RESULT_CODE
 	A
 L0
 	C
 	C
 	<condition>
-	BEQ L1
-	N
-L1
-	BRA L0
+	BEQ L0
+	D
 	END

@@ -5,8 +5,9 @@ RESULT_CODE
 	<condition>
 	BEQ L0
 	B
-	L
-	C
+	BRA L1
 L0
+	C
+L1
 	D
 	END

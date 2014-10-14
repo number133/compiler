@@ -170,7 +170,7 @@ public class ControlCompiler implements Compiler {
      * Recognize and Translate a Statement Block
      */
     private void block(){
-        block: while(!Arrays.asList('e').contains(look)){
+        block: while(!Arrays.asList('e', 'l', 'u').contains(look)){
             switch (look){
                 case 'i': {
                     doIf();
@@ -184,7 +184,8 @@ public class ControlCompiler implements Compiler {
                     doLoop();
                     break;
                 }
-                case 'e': {
+                case 'r': {
+                    doRepeat();
                     break;
                 }
                 default:{
@@ -272,6 +273,20 @@ public class ControlCompiler implements Compiler {
         block();
         match('e');
         emitLn("BRA " + labe1);
+    }
+
+    /**
+     * Parse and Translate a REPEAT Statement
+     */
+    private void doRepeat(){
+        String labe1;
+        match('r');
+        labe1 = newLabel();
+        postLabel(labe1);
+        block();
+        match('u');
+        condition();
+        emitLn("BEQ " + labe1);
     }
 
     /**
