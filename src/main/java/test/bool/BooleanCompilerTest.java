@@ -34,4 +34,24 @@ public class BooleanCompilerTest extends CoreTest{
     public void testExp(){
         runTest("bool/exp.txt", "exp");
     }
+
+    @Test
+    public void testEq(){
+        runTest("bool/eq.txt", "eq");
+    }
+
+    @Test
+    public void testNotEq(){
+        runTest("bool/noteq.txt", "not eq");
+    }
+
+    @Test
+    public void testMore(){
+        runTest("bool/more.txt", "more");
+    }
+
+    @Test
+    public void testLess(){
+        runTest("bool/less.txt", "less");
+    }
 }
